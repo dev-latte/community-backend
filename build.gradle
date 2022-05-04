@@ -34,12 +34,15 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'com.h2database:h2'
 
-//	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation "org.springframework.social:spring-social-twitter:1.1.2.RELEASE"	// twitter oAuth 1.0
+	implementation 'org.springframework.social:spring-social-web:1.1.6.RELEASE'		// 이 객체에 의존
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.security.oauth:spring-security-oauth2:2.5.2.RELEASE'
+
 //	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
 //	implementation 'org.springframework.boot:spring-boot-devtools:2.6.7'
 //	implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.7.5'
 
-//	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
-//	testImplementation 'org.springframework.security:spring-security-test'
+	testImplementation 'org.springframework.security:spring-security-test'
 }
