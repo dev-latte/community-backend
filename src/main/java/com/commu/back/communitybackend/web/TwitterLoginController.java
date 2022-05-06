@@ -50,7 +50,6 @@ public class TwitterLoginController {
 
     @PostConstruct
     private void init() {
-        // 여기부터
         clientId = env.getProperty("twitter.consumerKey");
         clientSecret = env.getProperty("twitter.consumerSecret");
         callbackUri = env.getProperty("twitter.callbackUri");
