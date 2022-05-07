@@ -12,8 +12,6 @@ import javax.persistence.*;
 @Entity
 @Table(name = "user", indexes = {@Index(name = "ix_user_principal", columnList = "user_principal", unique = true)})
 public class User extends BaseTimeEntity {
-    private static final long serialVersionUID = 1L;
-
     @Id
     @Column(name = "user_idx")
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,20 +20,20 @@ public class User extends BaseTimeEntity {
     @Column(name = "user_principal")
     private String userPrincipal;
 
-    @Column(name = "user_name")
-    private String userName;
+    @Column(name = "screen_name")
+    private String screenName;  // dev-latte
 
-    @Column(name = "user_id")
-    private String userId;
+    @Column(name = "display_name")
+    private String displayName; // @dev_latte
 
     @Column(name = "user_image")
     private String userImage;
 
     @Builder
-    public User(String userPrincipal, String userName, String userId, String userImage) {
+    public User(String userPrincipal, String screenName, String displayName, String userImage) {
         this.userPrincipal = userPrincipal;
-        this.userName = userName;
-        this.userId = userId;
+        this.screenName = screenName;
+        this.displayName = displayName;
         this.userImage = userImage;
     }
 }

@@ -5,10 +5,6 @@ import com.commu.back.communitybackend.service.social.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.support.GenericGroovyApplicationContext;
-import org.springframework.context.support.GenericXmlApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -37,7 +33,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-//@PropertySource("classpath:/application-oauth.properties")
 public class TwitterLoginController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private static String clientId, clientSecret, callbackUri;
@@ -47,6 +42,7 @@ public class TwitterLoginController {
 
     @Autowired
     private UserService userService;
+
 
     @PostConstruct
     private void init() {
@@ -60,10 +56,6 @@ public class TwitterLoginController {
         OAuth1Operations operations = new TwitterConnectionFactory(clientId, clientSecret).getOAuthOperations();
         OAuthToken oAuthToken = operations.fetchRequestToken(callbackUri, null);
         String authenticationUrl = operations.buildAuthenticateUrl(oAuthToken.getValue(), new OAuth1Parameters());
-
-        logger.debug(String.valueOf(oAuthToken));
-        logger.debug(authenticationUrl);
-
         request.getServletContext().setAttribute("token", oAuthToken);
         response.sendRedirect(authenticationUrl);
     }
@@ -75,7 +67,7 @@ public class TwitterLoginController {
         setAuthentication(userMap);
         saveUser(connection, userMap);
 
-        return ""; // react 서버 주소로 이동
+        return "";
     }
 
     private Connection<Twitter> getAccessTokenToConnection(HttpServletRequest request, @RequestParam(name = "oauth_verifier") String oauthVerifier) {
@@ -112,9 +104,8 @@ public class TwitterLoginController {
         if(userService.isNotExistUser(map.get("id"))){
             userService.saveUser(User.builder()
                     .userPrincipal(map.get("id"))
-                    .userName(map.get("name"))
                     .userImage(connection.getImageUrl())
-                    .userId(connection.getDisplayName())
+                    .displayName(connection.getDisplayName())
                     .build());
         }
     }
