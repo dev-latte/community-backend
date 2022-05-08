@@ -5,9 +5,11 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
 @EnableWebSecurity
 @Configuration
+@EnableRedisHttpSession
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
@@ -21,8 +23,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .antMatchers("/", "/login/**", "/twitter/complete", "/h2-console/**").permitAll()
 //                        .anyRequest().authenticated()
                 .and()
-                .logout()
-                    .logoutUrl("/logout")
-                    .logoutSuccessUrl("/");
+                    .logout()
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/")
+                        .deleteCookies("SESSION")
+                        .invalidateHttpSession(true);
     }
 }

@@ -9,7 +9,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://ec2-13-124-86-66.ap-northeast-2.compute.amazonaws.com")
+                .allowedOrigins("http://ec2-13-124-86-66.ap-northeast-2.compute.amazonaws.com", "http://localhost:3000")
                 .allowCredentials(true);
     }
 }

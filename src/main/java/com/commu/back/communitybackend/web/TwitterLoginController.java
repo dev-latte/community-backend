@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -52,22 +54,22 @@ public class TwitterLoginController {
     }
 
     @GetMapping(value = "/login/twitter")
-    public void twitter(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public ResponseEntity twitter(HttpServletRequest request, HttpServletResponse response) throws IOException {
         OAuth1Operations operations = new TwitterConnectionFactory(clientId, clientSecret).getOAuthOperations();
         OAuthToken oAuthToken = operations.fetchRequestToken(callbackUri, null);
         String authenticationUrl = operations.buildAuthenticateUrl(oAuthToken.getValue(), new OAuth1Parameters());
         request.getServletContext().setAttribute("token", oAuthToken);
-        response.sendRedirect(authenticationUrl);
+        return new ResponseEntity(authenticationUrl, HttpStatus.OK);
+//        response.sendRedirect(authenticationUrl);
     }
 
     @GetMapping(value = "/twitter/complete")
-    public String twitterComplete(HttpServletRequest request, @RequestParam(name = "oauth_token") String oauthToken, @RequestParam(name = "oauth_verifier") String oauthVerifier) {
+    public void twitterComplete(HttpServletRequest request, HttpServletResponse response, @RequestParam(name = "oauth_token") String oauthToken, @RequestParam(name = "oauth_verifier") String oauthVerifier) throws IOException {
         Connection<Twitter> connection = getAccessTokenToConnection(request, oauthVerifier);
         Map<String, String> userMap = getUserInfoMAp(connection);
         setAuthentication(userMap);
         saveUser(connection, userMap);
-
-        return "";
+        response.sendRedirect("http://localhost:3000");
     }
 
     private Connection<Twitter> getAccessTokenToConnection(HttpServletRequest request, @RequestParam(name = "oauth_verifier") String oauthVerifier) {

@@ -36,6 +36,12 @@ dependencies {
 
 	implementation "org.springframework.social:spring-social-twitter:1.1.2.RELEASE"	// twitter oAuth 1.0
 	implementation 'org.springframework.social:spring-social-web:1.1.6.RELEASE'		// 이 객체에 의존
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis:2.6.7'
+	implementation('org.springframework.session:spring-session-data-redis')
+	implementation (group: 'it.ozimov', name: 'embedded-redis', version: '0.7.3') {
+		exclude group: 'org.slf4j', module: 'slf4j-simple'
+	}
+
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.security.oauth:spring-security-oauth2:2.5.2.RELEASE'
 
